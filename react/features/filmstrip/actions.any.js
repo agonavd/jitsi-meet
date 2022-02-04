@@ -19,7 +19,7 @@ import {
 export function setFilmstripEnabled(enabled: boolean) {
     return {
         type: SET_FILMSTRIP_ENABLED,
-        enabled
+        enabled: false
     };
 }
 

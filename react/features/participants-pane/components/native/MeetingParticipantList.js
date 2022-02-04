@@ -173,7 +173,7 @@ class MeetingParticipantList extends PureComponent<Props> {
      * @inheritdoc
      * @returns {ReactElement}
      */
-    render() {
+     render() {
         const {
             _currentRoom,
             _localParticipant,
@@ -182,47 +182,22 @@ class MeetingParticipantList extends PureComponent<Props> {
             _sortedRemoteParticipants,
             t
         } = this.props;
-        const title = _currentRoom?.name
-
-            // $FlowExpectedError
-            ? `${_currentRoom.name} (${_participantsCount})`
-            : t('participantsPane.headings.participantsList',
-                { count: _participantsCount });
-
-        // Regarding the fact that we have 3 sections, we apply
-        // a certain height percentage for every section in order for all to fit
-        // inside the participants pane container
-        const containerStyle
-            = _participantsCount > 3 && styles.meetingListContainer;
 
         return (
-            <CollapsibleList
-                containerStyle = { containerStyle }
-                title = { title } >
-                {
-                    _showInviteButton
-                    && <Button
-                        children = { t('participantsPane.actions.invite') }
-                        icon = { this._renderInviteMoreIcon }
-                        labelStyle = { styles.inviteLabel }
-                        mode = 'contained'
-                        onPress = { this._onInvite }
-                        style = { styles.inviteButton } />
-                }
+            <View
+                style = { styles.meetingListContainer }>
+                <Text style = { styles.meetingListDescription }>
+                    {_currentRoom?.name
+
+                        // $FlowExpectedError
+                        ? `${_currentRoom.name} (${_participantsCount})`
+                        : t('participantsPane.headings.participantsList', { count: _participantsCount })}
+                </Text>
                 <ClearableInput
                     onChange = { this._onSearchStringChange }
                     placeholder = { t('participantsPane.search') }
                     selectionColor = { this.props.theme.palette.text01 } />
-                <FlatList
-                    bounces = { false }
-                    data = { [ _localParticipant?.id, ..._sortedRemoteParticipants ] }
-                    horizontal = { false }
-                    keyExtractor = { this._keyExtractor }
-                    renderItem = { this._renderParticipant }
-                    scrollEnabled = { true }
-                    showsHorizontalScrollIndicator = { false }
-                    windowSize = { 2 } />
-            </CollapsibleList>
+            </View>
         );
     }
 }
