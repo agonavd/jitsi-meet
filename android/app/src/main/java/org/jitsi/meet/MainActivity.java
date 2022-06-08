@@ -150,10 +150,10 @@ public class MainActivity extends JitsiMeetActivity {
         // Set default options
         JitsiMeetConferenceOptions defaultOptions
             = new JitsiMeetConferenceOptions.Builder()
-            .setServerURL(buildURL(defaultURL))
+            .setServerURL(buildURL("https://meet.virtualcp.app"))
             .setFeatureFlag("welcomepage.enabled", true)
             .setFeatureFlag("call-integration.enabled", false)
-            .setFeatureFlag("resolution", 360)
+            .setFeatureFlag("resolution", 1080)
             .setFeatureFlag("server-url-change.enabled", !configurationByRestrictions)
             .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);

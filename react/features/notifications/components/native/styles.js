@@ -38,7 +38,7 @@ export default {
      * Outermost view of a single notification.
      */
     notification: {
-        backgroundColor: '#768898',
+        backgroundColor: '#14B8A6',
         flexDirection: 'row',
         minHeight: 48,
         marginTop: 0.5 * BoxModel.margin

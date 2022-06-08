@@ -1,7 +1,7 @@
 // @flow
 
 import { ReducerRegistry } from '../base/redux';
-
+import { appNavigate } from '../app/actions';
 import {
     CLEAR_NOTIFICATIONS,
     HIDE_NOTIFICATION,
@@ -18,8 +18,11 @@ import { NOTIFICATION_TYPE_PRIORITIES } from './constants';
  */
 const DEFAULT_STATE = {
     enabled: true,
-    notifications: []
+    notifications: [],
+    conference: null
 };
+
+const _MESSAGE_DISSMISED_COMMAND = 'messageDismissed';
 
 /**
  * Reduces redux actions which affect the display of notifications.
@@ -38,6 +41,19 @@ ReducerRegistry.register('features/notifications',
                 notifications: []
             };
         case HIDE_NOTIFICATION:
+            const notification = state.notifications.filter(notification => notification.uid === action.uid);
+
+            if (!notification.length || !notification[0].props?.messageId) return;
+
+            action.conference.sendCommandOnce(_MESSAGE_DISSMISED_COMMAND, {
+                value: _MESSAGE_DISSMISED_COMMAND,
+                attributes: {
+                    "id": notification[0].props.messageId,
+                    "is_read": true,
+                    "handle_at": window.Date.now().toString()
+                }
+            });
+
             return {
                 ...state,
                 notifications: state.notifications.filter(

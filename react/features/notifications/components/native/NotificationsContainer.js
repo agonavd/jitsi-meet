@@ -162,7 +162,10 @@ class NotificationsContainer extends Component<Props> {
             this._clearNotificationDismissTimeout();
         }
 
-        this.props.dispatch(hideNotification(uid));
+        var endNotification = _notifications.filter(obj => {
+            return obj.props.isEndStream == true
+        })
+        this.props.dispatch(hideNotification(uid, endNotification[0]));
     }
 
     /**

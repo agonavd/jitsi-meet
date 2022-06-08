@@ -23,6 +23,11 @@ import {
 import { NOTIFICATION_TIMEOUT_TYPE } from './constants';
 import { joinLeaveNotificationsDisabled } from './functions';
 
+import {
+    HIDE_NOTIFICATION
+} from './actionTypes';
+
+const _MESSAGE_DISSMISED_COMMAND = 'messageDismissed';
 /**
  * Middleware that captures actions to display notifications.
  *
@@ -31,39 +36,6 @@ import { joinLeaveNotificationsDisabled } from './functions';
  */
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
-    case PARTICIPANT_JOINED: {
-        const result = next(action);
-        const { participant: p } = action;
-        const { dispatch, getState } = store;
-        const state = getState();
-        const { conference } = state['features/base/conference'];
-
-        if (conference && !p.local && !joinLeaveNotificationsDisabled() && !p.isReplacing) {
-            dispatch(showParticipantJoinedNotification(
-                getParticipantDisplayName(state, p.id)
-            ));
-        }
-
-        return result;
-    }
-    case PARTICIPANT_LEFT: {
-        if (!joinLeaveNotificationsDisabled()) {
-            const { dispatch, getState } = store;
-            const state = getState();
-            const participant = getParticipantById(
-                store.getState(),
-                action.participant.id
-            );
-
-            if (participant && !participant.local && !action.participant.isReplaced) {
-                dispatch(showParticipantLeftNotification(
-                    getParticipantDisplayName(state, participant.id)
-                ));
-            }
-        }
-
-        return next(action);
-    }
     case PARTICIPANT_UPDATED: {
         const state = store.getState();
         const { disableModeratorIndicator } = state['features/base/config'];
