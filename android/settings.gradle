@@ -49,7 +49,7 @@ include ':react-native-svg'
 project(':react-native-svg').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-svg/android')
 include ':react-native-video'
 project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android')
-include ':react-native-webrtc'
-project(':react-native-webrtc').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webrtc/android')
+include ':iristick-react-native-webrtc'
+project(':iristick-react-native-webrtc').projectDir = new File(rootProject.projectDir, '../node_modules/iristick-react-native-webrtc/android')
 include ':react-native-webview'
 project(':react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview/android')

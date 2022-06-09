@@ -292,8 +292,8 @@ function _visitNode(node, callback) {
     //
     // Required by:
     // - lib-jitsi-meet
-    require('react-native-callstats/csio-polyfill');
-    global.callstats = require('react-native-callstats/callstats');
+    // require('react-native-callstats/csio-polyfill');
+    // global.callstats = require('react-native-callstats/callstats');
 
     // XMLHttpRequest
     if (global.XMLHttpRequest) {

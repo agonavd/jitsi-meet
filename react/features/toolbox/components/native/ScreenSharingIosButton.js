@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { findNodeHandle, NativeModules, Platform } from 'react-native';
-import { ScreenCapturePickerView } from 'react-native-webrtc';
+// import { ScreenCapturePickerView } from 'iristick-react-native-webrtc';
 
 import { getFeatureFlag, IOS_SCREENSHARING_ENABLED } from '../../../base/flags';
 import { translate } from '../../../base/i18n';
@@ -33,9 +33,7 @@ type Props = AbstractButtonProps & {
 };
 
 const styles = {
-    screenCapturePickerView: {
-        display: 'none'
-    }
+    
 };
 
 /**
@@ -86,7 +84,7 @@ class ScreenSharingIosButton extends AbstractButton<Props, *> {
     _handleClick() {
         const handle = findNodeHandle(this._nativeComponent);
 
-        NativeModules.ScreenCapturePickerViewManager.show(handle);
+        // NativeModules.ScreenCapturePickerViewManager.show(handle);
     }
 
     /**
@@ -118,11 +116,7 @@ class ScreenSharingIosButton extends AbstractButton<Props, *> {
    * @returns {ReactElement|null}
    */
     _getElementAfter() {
-        return (
-            <ScreenCapturePickerView
-                ref = { this._setNativeComponent }
-                style = { styles.screenCapturePickerView } />
-        );
+
     }
 }
 

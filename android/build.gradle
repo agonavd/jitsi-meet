@@ -55,6 +55,7 @@ allprojects {
             }
         }
         google()
+        ivy { url 'https://developer.iristick.com/repo' }
         maven { url 'https://www.jitpack.io' }
     }
 
