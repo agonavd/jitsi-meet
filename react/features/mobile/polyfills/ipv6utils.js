@@ -1,7 +1,7 @@
 // @flow
 
 import { NativeModules } from 'react-native';
-import { RTCSessionDescription } from 'iristick-react-native-webrtc';
+import { RTCSessionDescription } from 'react-native-webrtc-iristick';
 
 /**
  * Synthesizes IPv6 addresses on iOS in order to support IPv6 NAT64 networks.

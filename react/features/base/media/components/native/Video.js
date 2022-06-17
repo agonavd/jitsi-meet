@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { RTCView } from 'iristick-react-native-webrtc';
+import { RTCView } from 'react-native-webrtc-iristick';
 
 import { Pressable } from '../../../react';
 

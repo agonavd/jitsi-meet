@@ -5,7 +5,7 @@ import {
     RTCIceCandidate,
     mediaDevices,
     permissions
-} from 'iristick-react-native-webrtc';
+} from 'react-native-webrtc-iristick';
 
 import RTCPeerConnection from './RTCPeerConnection';
 

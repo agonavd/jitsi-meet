@@ -93,7 +93,7 @@ dependencies {
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-svg')
     implementation project(':react-native-video')
-    implementation project(':iristick-react-native-webrtc')
+    implementation project(':react-native-webrtc-iristick')
     implementation project(':react-native-webview')
 
     testImplementation 'junit:junit:4.12'
