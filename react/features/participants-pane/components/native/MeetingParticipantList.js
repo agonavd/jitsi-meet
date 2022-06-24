@@ -188,7 +188,7 @@ class MeetingParticipantList extends PureComponent<Props> {
      * @inheritdoc
      * @returns {ReactElement}
      */
-    render() {
+     render() {
         const {
             _currentRoom,
             _localParticipant,
@@ -200,6 +200,7 @@ class MeetingParticipantList extends PureComponent<Props> {
             lobbyParticipants,
             t
         } = this.props;
+<<<<<<< HEAD
         const title = _currentRoom?.name
 
             // $FlowExpectedError
@@ -237,20 +238,24 @@ class MeetingParticipantList extends PureComponent<Props> {
                         onPress = { this._onInvite }
                         style = { styles.inviteButton } />
                 }
+=======
+
+        return (
+            <View
+                style = { styles.meetingListContainer }>
+                <Text style = { styles.meetingListDescription }>
+                    {_currentRoom?.name
+
+                        // $FlowExpectedError
+                        ? `${_currentRoom.name} (${_participantsCount})`
+                        : t('participantsPane.headings.participantsList', { count: _participantsCount })}
+                </Text>
+>>>>>>> b029c9d98 (See only the video from the vuzix device not other participants)
                 <ClearableInput
                     onChange = { this._onSearchStringChange }
                     placeholder = { t('participantsPane.search') }
                     selectionColor = { this.props.theme.palette.text01 } />
-                <FlatList
-                    bounces = { false }
-                    data = { [ _localParticipant?.id, ..._sortedRemoteParticipants ] }
-                    horizontal = { false }
-                    keyExtractor = { this._keyExtractor }
-                    renderItem = { this._renderParticipant }
-                    scrollEnabled = { true }
-                    showsHorizontalScrollIndicator = { false }
-                    windowSize = { 2 } />
-            </CollapsibleList>
+            </View>
         );
     }
 }

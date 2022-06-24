@@ -91,7 +91,7 @@ export function shouldDisplayTileView(state: Object = {}) {
         || getPinnedParticipant(state)
 
         // It's a 1-on-1 meeting
-        || participantCount < 3
+        || participantCount < 9999
 
         // There is a shared YouTube video in the meeting
         || isVideoPlaying(state)
