@@ -15,6 +15,7 @@ import {
     JitsiConnectionErrors
 } from '../base/lib-jitsi-meet';
 import { MiddlewareRegistry } from '../base/redux';
+import { setPrejoinPageVisibility } from '../prejoin';
 
 import {
     CANCEL_LOGIN,
@@ -62,13 +63,14 @@ MiddlewareRegistry.register(store => next => action => {
             // Go back to the app's entry point.
             _hideLoginDialog(store);
 
-            const { authRequired, conference } = getState()['features/base/conference'];
+            const state = getState();
+            const { authRequired, conference } = state['features/base/conference'];
+            const { passwordRequired } = state['features/base/connection'];
 
             // Only end the meeting if we are not already inside and trying to upgrade.
-            if (authRequired && !conference) {
-                // FIXME Like cancelWaitForOwner, dispatch conferenceLeft to notify
-                // the external-api.
-
+            // NOTE: Despite it's confusing name, `passwordRequired` implies an XMPP
+            // connection auth error.
+            if ((passwordRequired || authRequired) && !conference) {
                 dispatch(appNavigate(undefined));
             }
         }
@@ -119,6 +121,7 @@ MiddlewareRegistry.register(store => next => action => {
                 && error.name === JitsiConnectionErrors.PASSWORD_REQUIRED
                 && typeof error.recoverable === 'undefined') {
             error.recoverable = true;
+            store.dispatch(setPrejoinPageVisibility(false));
             store.dispatch(openLoginDialog());
         }
         break;

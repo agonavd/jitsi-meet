@@ -11,7 +11,6 @@ import { getParticipantCount } from '../base/participants/functions';
 import {
     CLEAR_NOTIFICATIONS,
     HIDE_NOTIFICATION,
-    HIDE_RAISE_HAND_NOTIFICATIONS,
     SET_NOTIFICATIONS_ENABLED,
     SHOW_NOTIFICATION
 } from './actionTypes';
@@ -93,19 +92,6 @@ return (dispatch: Dispatch<any>, getState: Function) => {
 }
 
 /**
- * Removes the raise hand notifications.
- *
- * @returns {{
- *     type: HIDE_RAISE_HAND_NOTIFICATIONS
- * }}
- */
-export function hideRaiseHandNotifications() {
-    return {
-        type: HIDE_RAISE_HAND_NOTIFICATIONS
-    };
-}
-
-/**
  * Stops notifications from being displayed.
  *
  * @param {boolean} enabled - Whether or not notifications should display.
@@ -156,12 +142,15 @@ export function showNotification(props: Object = {}, type: ?string) {
      };    
 
     return function(dispatch: Function, getState: Function) {
-        const { notifications, notificationTimeouts } = getState()['features/base/config'];
+        const { disabledNotifications = [], notifications, notificationTimeouts } = getState()['features/base/config'];
         const enabledFlag = getFeatureFlag(getState(), NOTIFICATIONS_ENABLED, true);
         props = restructureProps(props);
         if (!props) return;
         const shouldDisplay = 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             enabledFlag
             && !props.description.handledAt || props.description?.deviceMessageType === "CONSULTATION_ENDED"
             && props.description?.sendTo === "clinician" || props.description?.isRaisedHand === true || props.description?.deviceMessageType === "CONSULTATION_ENDED"

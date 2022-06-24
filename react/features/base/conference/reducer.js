@@ -18,6 +18,7 @@ import {
     LOCK_STATE_CHANGED,
     P2P_STATUS_CHANGED,
     SET_FOLLOW_ME,
+    SET_OBFUSCATED_ROOM,
     SET_PASSWORD,
     SET_PENDING_SUBJECT_CHANGE,
     SET_ROOM,
@@ -88,6 +89,12 @@ ReducerRegistry.register(
         case SET_LOCATION_URL:
             return set(state, 'room', undefined);
 
+        case SET_OBFUSCATED_ROOM:
+            return { ...state,
+                obfuscatedRoom: action.obfuscatedRoom,
+                obfuscatedRoomSource: action.obfuscatedRoomSource
+            };
+
         case SET_PASSWORD:
             return _setPassword(state, action);
 
@@ -137,7 +144,7 @@ function _authStatusChanged(state, { authEnabled, authLogin }) {
  */
 function _conferenceFailed(state, { conference, error }) {
     // The current (similar to getCurrentConference in
-    // base/conference/functions.js) conference which is joining or joined:
+    // base/conference/functions.any.js) conference which is joining or joined:
     const conference_ = state.conference || state.joining;
 
     if (conference_ && conference_ !== conference) {

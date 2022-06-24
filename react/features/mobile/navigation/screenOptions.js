@@ -1,62 +1,27 @@
-// @flow
-/* eslint-disable react/no-multi-comp */
-
-import { TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import { Platform } from 'react-native';
 
 import {
     Icon,
-    IconClose,
     IconHelp,
     IconHome,
     IconInfo,
     IconSettings
 } from '../../base/icons';
-import BaseTheme from '../../base/ui/components/BaseTheme';
+import BaseTheme from '../../base/ui/components/BaseTheme.native';
 
-import HeaderNavigationButton from './components/HeaderNavigationButton';
 import { goBack } from './components/conference/ConferenceNavigationContainerRef';
+import { goBack as goBackToLobbyScreen } from './components/lobby/LobbyNavigationContainerRef';
+import { lobbyScreenHeaderCloseButton, screenHeaderCloseButton } from './functions';
+import { goBack as goBackToWelcomeScreen } from './rootNavigationContainerRef';
+
 
 /**
  * Navigation container theme.
  */
 export const navigationContainerTheme = {
     colors: {
-        background: BaseTheme.palette.ui12
-    }
-};
-
-/**
- * Default modal transition for the current platform.
- */
-export const conferenceModalPresentation = Platform.select({
-    ios: TransitionPresets.ModalPresentationIOS,
-    default: TransitionPresets.DefaultTransition
-});
-
-/**
- * Screen options and transition types.
- */
-export const fullScreenOptions = {
-    ...TransitionPresets.ModalTransition,
-    gestureEnabled: false,
-    headerShown: false
-};
-
-
-/**
- * Dial-IN Info screen options and transition types.
- */
-export const dialInSummaryScreenOptions = {
-    ...TransitionPresets.ModalTransition,
-    gestureEnabled: true,
-    headerShown: true,
-    headerStyle: {
-        backgroundColor: BaseTheme.palette.screen01Header
-    },
-    headerTitleStyle: {
-        color: BaseTheme.palette.text01
+        background: BaseTheme.palette.uiBackground
     }
 };
 
@@ -64,7 +29,7 @@ export const dialInSummaryScreenOptions = {
  * Drawer navigator screens options and transition types.
  */
 export const drawerNavigatorScreenOptions = {
-    ...TransitionPresets.ModalTransition,
+    animation: 'default',
     gestureEnabled: true,
     headerShown: false
 };
@@ -74,25 +39,30 @@ export const drawerNavigatorScreenOptions = {
  * Drawer screen options and transition types.
  */
 export const drawerScreenOptions = {
-    ...TransitionPresets.ModalTransition,
+    animation: 'default',
     gestureEnabled: true,
     headerShown: true,
     headerStyle: {
-        backgroundColor: BaseTheme.palette.screen01Header
-    }
+        backgroundColor: BaseTheme.palette.screen02Header
+    },
+    orientation: Platform.select({
+        ios: 'default',
+        android: 'all'
+    })
 };
 
 /**
  * Drawer content options.
  */
 export const drawerContentOptions = {
-    drawerActiveBackgroundColor: BaseTheme.palette.ui12,
+    drawerActiveBackgroundColor: BaseTheme.palette.uiBackground,
     drawerActiveTintColor: BaseTheme.palette.screen01Header,
+    drawerInactiveTintColor: BaseTheme.palette.text02,
     drawerLabelStyle: {
         marginLeft: BaseTheme.spacing[2]
     },
     drawerStyle: {
-        backgroundColor: BaseTheme.palette.ui12,
+        backgroundColor: BaseTheme.palette.uiBackground,
         maxWidth: 400,
         width: '75%'
     }
@@ -105,12 +75,15 @@ export const welcomeScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconHome } />
     ),
+    headerStyle: {
+        backgroundColor: BaseTheme.palette.screen01Header
+    },
     headerTitleStyle: {
-        color: BaseTheme.palette.screen01Header
+        color: BaseTheme.palette.text01
     }
 };
 
@@ -121,7 +94,7 @@ export const settingsScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconSettings } />
     ),
@@ -137,7 +110,7 @@ export const termsAndPrivacyScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconInfo } />
     ),
@@ -153,7 +126,7 @@ export const helpScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconHelp } />
     ),
@@ -166,14 +139,13 @@ export const helpScreenOptions = {
  * Screen options for conference.
  */
 export const conferenceScreenOptions = {
-    ...fullScreenOptions
-};
-
-/**
- * Screen options for lobby modal.
- */
-export const lobbyScreenOptions = {
-    ...fullScreenOptions
+    animation: 'default',
+    gestureEnabled: false,
+    headerShown: false,
+    orientation: Platform.select({
+        ios: 'default',
+        android: 'all'
+    })
 };
 
 /**
@@ -184,7 +156,7 @@ export const chatTabBarOptions = {
     tabBarLabelStyle: {
         fontSize: BaseTheme.typography.labelRegular.fontSize
     },
-    tabBarInactiveTintColor: BaseTheme.palette.field02Disabled,
+    tabBarInactiveTintColor: BaseTheme.palette.text01,
     tabBarIndicatorStyle: {
         backgroundColor: BaseTheme.palette.screen01Header
     }
@@ -194,68 +166,149 @@ export const chatTabBarOptions = {
  * Screen options for presentation type modals.
  */
 export const presentationScreenOptions = {
-    ...conferenceModalPresentation,
     headerBackTitleVisible: false,
-    headerLeft: () => (
-        <HeaderNavigationButton
-            onPress = { goBack }
-            src = { IconClose } />
-    ),
+    headerLeft: () => screenHeaderCloseButton(goBack),
     headerStatusBarHeight: 0,
     headerStyle: {
-        backgroundColor: BaseTheme.palette.screen01Header
+        backgroundColor: BaseTheme.palette.screen02Header
     },
     headerTitleStyle: {
         color: BaseTheme.palette.text01
-    }
+    },
+    orientation: Platform.select({
+        ios: 'default',
+        android: 'all'
+    })
+};
+
+/**
+ * Screen options for car mode.
+ */
+export const carmodeScreenOptions = {
+    ...presentationScreenOptions,
+    orientation: 'portrait'
 };
 
 /**
  * Screen options for chat.
  */
-export const chatScreenOptions = {
-    ...presentationScreenOptions
+export const chatScreenOptions = presentationScreenOptions;
+
+/**
+ * Dial-IN Info screen options and transition types.
+ */
+export const dialInSummaryScreenOptions = {
+    ...presentationScreenOptions,
+    animation: 'slide_from_bottom',
+    headerLeft: () => screenHeaderCloseButton(goBackToWelcomeScreen)
 };
 
 /**
  * Screen options for invite modal.
  */
-export const inviteScreenOptions = {
-    ...presentationScreenOptions
-};
+export const inviteScreenOptions = presentationScreenOptions;
 
 /**
  * Screen options for participants modal.
  */
-export const participantsScreenOptions = {
-    ...presentationScreenOptions
-};
+export const participantsScreenOptions = presentationScreenOptions;
 
 /**
  * Screen options for speaker stats modal.
  */
-export const speakerStatsScreenOptions = {
-    ...presentationScreenOptions
-};
+export const speakerStatsScreenOptions = presentationScreenOptions;
 
 /**
  * Screen options for security options modal.
  */
-export const securityScreenOptions = {
-    ...presentationScreenOptions
+export const securityScreenOptions = presentationScreenOptions;
+
+/**
+ * Screen options for recording modal.
+ */
+export const recordingScreenOptions = presentationScreenOptions;
+
+/**
+ * Screen options for live stream modal.
+ */
+export const liveStreamScreenOptions = presentationScreenOptions;
+
+/**
+ * Screen options for lobby modal.
+ */
+export const lobbyScreenOptions = {
+    ...presentationScreenOptions,
+    headerLeft: () => lobbyScreenHeaderCloseButton()
 };
+
+/**
+ * Screen options for lobby chat modal.
+ */
+export const lobbyChatScreenOptions = {
+    ...presentationScreenOptions,
+    headerLeft: () => screenHeaderCloseButton(goBackToLobbyScreen)
+};
+
+/**
+ * Screen options for salesforce link modal.
+ */
+export const salesforceScreenOptions = presentationScreenOptions;
+
+/**
+ * Screen options for GIPHY integration modal.
+ */
+export const gifsMenuOptions = presentationScreenOptions;
 
 /**
  * Screen options for shared document.
  */
 export const sharedDocumentScreenOptions = {
-    ...TransitionPresets.DefaultTransition,
+    animation: 'slide_from_right',
     headerBackTitleVisible: false,
     headerShown: true,
     headerStyle: {
-        backgroundColor: BaseTheme.palette.screen01Header
+        backgroundColor: BaseTheme.palette.screen02Header
     },
     headerTitleStyle: {
         color: BaseTheme.palette.text01
-    }
+    },
+    orientation: Platform.select({
+        ios: 'default',
+        android: 'all'
+    })
+};
+
+/**
+ * Screen options for connecting screen.
+ */
+export const connectingScreenOptions = {
+    gestureEnabled: false,
+    headerShown: false
+};
+
+/**
+ * Screen options for pre-join screen.
+ */
+export const preJoinScreenOptions = {
+    gestureEnabled: false,
+    headerStyle: {
+        backgroundColor: BaseTheme.palette.screen02Header
+    },
+    headerTitle: ''
+};
+
+/**
+ * Screen options for conference navigation container screen.
+ */
+export const conferenceNavigationContainerScreenOptions = {
+    gestureEnabled: false,
+    headerShown: false
+};
+
+/**
+ * Screen options for lobby navigation container screen.
+ */
+export const lobbyNavigationContainerScreenOptions = {
+    gestureEnabled: false,
+    headerShown: false
 };

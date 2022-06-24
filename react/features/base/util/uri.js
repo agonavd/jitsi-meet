@@ -523,19 +523,29 @@ export function urlObjectToString(o: Object): ?string {
 
     // query/search
 
-    // Web's ExternalAPI jwt
-    const { jwt } = o;
+    // Web's ExternalAPI jwt and lang
+    const { jwt, lang, release } = o;
+
+    const search = new URLSearchParams(url.search);
 
     if (jwt) {
-        let { search } = url;
+        search.set('jwt', jwt);
+    }
 
-        if (search.indexOf('?jwt=') === -1 && search.indexOf('&jwt=') === -1) {
-            search.startsWith('?') || (search = `?${search}`);
-            search.length === 1 || (search += '&');
-            search += `jwt=${jwt}`;
+    const { defaultLanguage } = o.configOverwrite || {};
 
-            url.search = search;
-        }
+    if (lang || defaultLanguage) {
+        search.set('lang', lang || defaultLanguage);
+    }
+
+    if (release) {
+        search.set('release', release);
+    }
+
+    const searchString = search.toString();
+
+    if (searchString) {
+        url.search = `?${searchString}`;
     }
 
     // fragment/hash
@@ -596,4 +606,21 @@ export function addHashParamsToURL(url: URL, hashParamsToAdd: Object = {}) {
  */
 export function getDecodedURI(uri: string) {
     return decodeURI(uri.replace(/^https?:\/\//i, ''));
+}
+
+/**
+ * Adds new param to a url string. Checks whether to use '?' or '&' as a separator (checks for already existing params).
+ *
+ * @param {string} url - The url to modify.
+ * @param {string} name - The param name to add.
+ * @param {string} value - The value for the param.
+ *
+ * @returns {string} - The modified url.
+ */
+export function appendURLParam(url: string, name: string, value: string) {
+    const newUrl = new URL(url);
+
+    newUrl.searchParams.append(name, value);
+
+    return newUrl.toString();
 }

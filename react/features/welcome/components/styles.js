@@ -26,22 +26,6 @@ const TEXT_COLOR = BaseTheme.palette.text01;
  */
 export default {
 
-    /**
-     * The audio-video switch itself.
-     */
-    audioVideoSwitch: {
-        marginHorizontal: 5
-    },
-
-    /**
-     * View that contains the audio-video switch and the labels.
-     */
-    audioVideoSwitchContainer: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginRight: BaseTheme.spacing[2]
-    },
-
     blankPageText: {
         color: TEXT_COLOR,
         fontSize: 18
@@ -180,7 +164,8 @@ export default {
      */
     roomContainer: {
         alignSelf: 'stretch',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginHorizontal: BaseTheme.spacing[2]
     },
 
     /**
@@ -196,8 +181,7 @@ export default {
 
     drawerNavigationIcon: {
         height: BaseTheme.spacing[6],
-        marginLeft: BaseTheme.spacing[1],
-        marginTop: BaseTheme.spacing[1],
+        marginLeft: BaseTheme.spacing[3],
         width: BaseTheme.spacing[6]
     },
 

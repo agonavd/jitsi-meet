@@ -51,9 +51,24 @@ type Props = {
     _sortedRemoteParticipants: Map<string, string>,
 
     /**
+     * List of breakout rooms that were created.
+     */
+    breakoutRooms: Array,
+
+    /**
      * The redux dispatch function.
      */
     dispatch: Function,
+
+    /**
+     * Is the local participant moderator?
+     */
+    isLocalModerator: boolean,
+
+    /**
+     * List of participants waiting in lobby.
+     */
+    lobbyParticipants: Array,
 
     /**
      * Participants search string.
@@ -180,6 +195,9 @@ class MeetingParticipantList extends PureComponent<Props> {
             _participantsCount,
             _showInviteButton,
             _sortedRemoteParticipants,
+            breakoutRooms,
+            isLocalModerator,
+            lobbyParticipants,
             t
         } = this.props;
 

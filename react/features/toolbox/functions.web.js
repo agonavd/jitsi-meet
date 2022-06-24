@@ -41,7 +41,7 @@ export function isButtonEnabled(name: string, state: Object) {
  * otherwise.
  */
 export function isToolboxVisible(state: Object) {
-    const { iAmSipGateway, toolbarConfig } = state['features/base/config'];
+    const { iAmRecorder, iAmSipGateway, toolbarConfig } = state['features/base/config'];
     const { alwaysVisible } = toolbarConfig || {};
     const {
         timeoutID,
@@ -49,8 +49,8 @@ export function isToolboxVisible(state: Object) {
     } = state['features/toolbox'];
     const { audioSettingsVisible, videoSettingsVisible } = state['features/settings'];
 
-    return Boolean(!iAmSipGateway && (timeoutID || visible || alwaysVisible
-                                      || audioSettingsVisible || videoSettingsVisible));
+    return Boolean(!iAmRecorder && !iAmSipGateway
+            && (timeoutID || visible || alwaysVisible || audioSettingsVisible || videoSettingsVisible));
 }
 
 /**
@@ -62,7 +62,7 @@ export function isToolboxVisible(state: Object) {
 export function isAudioSettingsButtonDisabled(state: Object) {
 
     return !(hasAvailableDevices(state, 'audioInput')
-          && hasAvailableDevices(state, 'audioOutput'))
+          || hasAvailableDevices(state, 'audioOutput'))
           || state['features/base/config'].startSilent;
 }
 

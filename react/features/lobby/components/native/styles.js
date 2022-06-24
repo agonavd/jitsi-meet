@@ -1,40 +1,111 @@
 // @flow
 
-import BaseTheme from '../../../base/ui/components/BaseTheme';
+import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 
 const SECONDARY_COLOR = BaseTheme.palette.border04;
-
-export const ENABLED_THUMB_COLOR = BaseTheme.palette.action04;
-export const ENABLED_TRACK_COLOR = BaseTheme.palette.screen01Header;
-export const DISABLED_THUMB_COLOR = BaseTheme.palette.icon04;
 
 export default {
     button: {
         alignItems: 'center',
-        borderRadius: 4,
-        marginVertical: 4,
-        paddingVertical: 8
+        borderRadius: BaseTheme.shape.borderRadius,
+        padding: BaseTheme.spacing[2],
+        height: BaseTheme.spacing[7],
+        width: '100%'
     },
 
-    contentWrapper: {
-        alignItems: 'center',
-        display: 'flex',
+    buttonStylesBorderless: {
+        iconStyle: {
+            color: BaseTheme.palette.icon01,
+            fontSize: 24
+        },
+        style: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginHorizontal: BaseTheme.spacing[3],
+            height: 24,
+            width: 24
+        },
+        underlayColor: 'transparent'
+    },
+
+    lobbyChatWrapper: {
+        backgroundColor: BaseTheme.palette.ui01,
+        alignItems: 'stretch',
         flexDirection: 'column',
         justifyItems: 'center',
         height: '100%'
     },
 
-    closeIcon: {
-        color: 'red',
-        fontSize: 20
+    lobbyChatHeader: {
+        flexDirection: 'row',
+        padding: 20
     },
 
-    dialogTitle: {
-        fontSize: 18,
+    lobbyChatTitle: {
+        color: BaseTheme.palette.text01,
+        fontSize: 20,
         fontWeight: 'bold',
-        margin: 'auto',
-        marginVertical: 24,
-        textAlign: 'center'
+        flexShrink: 1
+    },
+
+    lobbyChatCloseButton: {
+        fontSize: 24,
+        marginLeft: BaseTheme.spacing[3],
+        marginTop: BaseTheme.spacing[1],
+        color: BaseTheme.palette.icon01
+    },
+
+    contentWrapper: {
+        flex: 1
+    },
+
+    contentWrapperWide: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+
+    largeVideoContainer: {
+        minHeight: '50%'
+    },
+
+    largeVideoContainerWide: {
+        height: '100%',
+        marginRight: 'auto',
+        position: 'absolute',
+        width: '50%'
+    },
+
+    contentContainer: {
+        alignSelf: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        minHeight: '50%',
+        paddingHorizontal: BaseTheme.spacing[3],
+        width: 400
+    },
+
+    contentContainerWide: {
+        alignItems: 'center',
+        height: '100%',
+        justifyContent: 'center',
+        left: '50%',
+        paddingHorizontal: BaseTheme.spacing[3],
+        position: 'absolute',
+        width: '50%'
+    },
+
+    toolboxContainer: {
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: BaseTheme.spacing[3]
+    },
+
+    toolboxContainerWide: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: BaseTheme.spacing[3]
     },
 
     displayNameText: {
@@ -52,41 +123,55 @@ export default {
         fontSize: 16
     },
 
+    formWrapper: {
+        alignSelf: 'stretch',
+        justifyContent: 'center'
+    },
+
     field: {
+        alignSelf: 'stretch',
+        backgroundColor: BaseTheme.palette.field02,
         borderColor: SECONDARY_COLOR,
-        borderRadius: 4,
-        borderWidth: 1,
-        marginVertical: 8,
-        padding: 8
+        borderRadius: BaseTheme.shape.borderRadius,
+        borderWidth: 2,
+        height: BaseTheme.spacing[7],
+        marginTop: BaseTheme.spacing[3],
+        marginHorizontal: 12,
+        padding: BaseTheme.spacing[2],
+        textAlign: 'center'
     },
 
     fieldError: {
-        color: BaseTheme.palette.warning07,
-        fontSize: 10
-    },
-
-    fieldRow: {
-        paddingTop: 16
+        color: BaseTheme.palette.warning03,
+        marginLeft: BaseTheme.spacing[3],
+        fontSize: 16
     },
 
     fieldLabel: {
+        ...BaseTheme.typography.heading6,
+        color: BaseTheme.palette.text01,
         textAlign: 'center'
     },
 
-    formWrapper: {
-        alignItems: 'stretch',
+    standardButtonWrapper: {
         alignSelf: 'stretch',
-        paddingVertical: 16
+        marginHorizontal: 12
     },
 
     joiningMessage: {
-        color: 'rgba(0, 0, 0, .7)',
-        paddingBottom: 36,
+        color: BaseTheme.palette.text01,
+        marginHorizontal: BaseTheme.spacing[3],
         textAlign: 'center'
     },
 
+    passwordJoinButtonsWrapper: {
+        alignItems: 'stretch',
+        alignSelf: 'stretch',
+        marginHorizontal: BaseTheme.spacing[3]
+    },
+
     loadingIndicator: {
-        marginVertical: 36
+        marginBottom: BaseTheme.spacing[4]
     },
 
     participantBox: {
@@ -100,29 +185,25 @@ export default {
     },
 
     primaryButton: {
-        alignSelf: 'stretch',
-        backgroundColor: 'rgb(3, 118, 218)'
+        backgroundColor: BaseTheme.palette.action01,
+        marginTop: BaseTheme.spacing[3]
+    },
+
+    primaryButtonDisabled: {
+        backgroundColor: BaseTheme.palette.action03Disabled,
+        marginTop: BaseTheme.spacing[3]
     },
 
     primaryButtonText: {
-        color: 'white'
+        ...BaseTheme.typography.labelButtonLarge,
+        color: BaseTheme.palette.text01,
+        lineHeight: 30
     },
 
-    secondaryButton: {
-        alignSelf: 'stretch',
-        backgroundColor: 'transparent'
-    },
-
-    secondaryText: {
-        color: 'rgba(0, 0, 0, .7)',
+    primaryText: {
+        color: BaseTheme.palette.text01,
         margin: 'auto',
         textAlign: 'center'
-    },
-
-    cancelButton: {
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        marginVertical: 4
     },
 
     // KnockingParticipantList

@@ -62,11 +62,6 @@ export type Props = {
     icon?: String,
 
     /**
-     * Whether or not the dismiss button should be displayed.
-     */
-    isDismissAllowed: boolean,
-
-    /**
      * Maximum lines of the description.
      */
     maxLines: ?number,
@@ -123,8 +118,7 @@ export default class AbstractNotification<P: Props> extends Component<P> {
      * @static
      */
     static defaultProps = {
-        appearance: NOTIFICATION_TYPE.NORMAL,
-        isDismissAllowed: true
+        appearance: NOTIFICATION_TYPE.NORMAL
     };
 
     /**

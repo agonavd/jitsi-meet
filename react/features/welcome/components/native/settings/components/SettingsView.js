@@ -25,7 +25,11 @@ import { normalizeUserInputURL, isServerURLChangeEnabled } from '../../../../../
 
 import FormRow from './FormRow';
 import FormSectionAccordion from './FormSectionAccordion';
-import styles, { THUMB_COLOR } from './styles';
+import styles, {
+    DISABLED_TRACK_COLOR,
+    ENABLED_TRACK_COLOR,
+    THUMB_COLOR
+} from './styles';
 
 /**
  * Application information module.
@@ -155,13 +159,15 @@ class SettingsView extends AbstractSettingsView<Props, State> {
      */
     componentDidMount() {
         const {
-            navigation
+            navigation,
+            t
         } = this.props;
 
         navigation.setOptions({
             headerLeft: () =>
                 renderArrowBackButton(() =>
-                    navigation.jumpTo(screen.welcome.main))
+                    navigation.navigate(screen.welcome.main)),
+            headerTitle: t('settings.screenTitle')
         });
     }
 
@@ -184,6 +190,16 @@ class SettingsView extends AbstractSettingsView<Props, State> {
         } = this.state;
         const { palette } = this.props.theme;
 
+        const textInputTheme = {
+            colors: {
+                background: palette.ui01,
+                placeholder: palette.text01,
+                primary: palette.screen01Header,
+                underlineColor: 'transparent',
+                text: palette.text01
+            }
+        };
+
         return (
             <JitsiScreen
                 style = { styles.settingsViewContainer }>
@@ -197,16 +213,11 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             label = { this.props.t('settingsView.displayName') }
                             mode = 'outlined'
                             onChangeText = { this._onChangeDisplayName }
-                            placeholder = 'John Doe'
+                            placeholder = { this.props.t('settingsView.displayNamePlaceholderText') }
                             spellCheck = { false }
                             style = { styles.textInputContainer }
                             textContentType = { 'name' } // iOS only
-                            theme = {{
-                                colors: {
-                                    primary: palette.screen01Header,
-                                    underlineColor: 'transparent'
-                                }
-                            }}
+                            theme = { textInputTheme }
                             value = { displayName } />
                         <Divider style = { styles.fieldSeparator } />
                         <TextInput
@@ -220,12 +231,7 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             spellCheck = { false }
                             style = { styles.textInputContainer }
                             textContentType = { 'emailAddress' } // iOS only
-                            theme = {{
-                                colors: {
-                                    primary: palette.screen01Header,
-                                    underlineColor: 'transparent'
-                                }
-                            }}
+                            theme = { textInputTheme }
                             value = { email } />
                     </FormSectionAccordion>
                     <FormSectionAccordion
@@ -245,12 +251,7 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             spellCheck = { false }
                             style = { styles.textInputContainer }
                             textContentType = { 'URL' } // iOS only
-                            theme = {{
-                                colors: {
-                                    primary: palette.screen01Header,
-                                    underlineColor: 'transparent'
-                                }
-                            }}
+                            theme = { textInputTheme }
                             value = { serverURL } />
                         <Divider style = { styles.fieldSeparator } />
                         <FormRow
@@ -258,7 +259,10 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             <Switch
                                 onValueChange = { this._onStartAudioMutedChange }
                                 thumbColor = { THUMB_COLOR }
-                                trackColor = {{ true: palette.screen01Header }}
+                                trackColor = {{
+                                    true: ENABLED_TRACK_COLOR,
+                                    false: DISABLED_TRACK_COLOR
+                                }}
                                 value = { startWithAudioMuted } />
                         </FormRow>
                         <Divider style = { styles.fieldSeparator } />
@@ -266,7 +270,10 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             <Switch
                                 onValueChange = { this._onStartVideoMutedChange }
                                 thumbColor = { THUMB_COLOR }
-                                trackColor = {{ true: palette.screen01Header }}
+                                trackColor = {{
+                                    true: ENABLED_TRACK_COLOR,
+                                    false: DISABLED_TRACK_COLOR
+                                }}
                                 value = { startWithVideoMuted } />
                         </FormRow>
                     </FormSectionAccordion>
@@ -276,7 +283,7 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                         label = 'settingsView.buildInfoSection'>
                         <FormRow
                             label = 'settingsView.version'>
-                            <Text>
+                            <Text style = { styles.text }>
                                 {`${AppInfo.version} build ${AppInfo.buildNumber}`}
                             </Text>
                         </FormRow>
@@ -292,7 +299,10 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                                     <Switch
                                         onValueChange = { this._onDisableCallIntegration }
                                         thumbColor = { THUMB_COLOR }
-                                        trackColor = {{ true: palette.screen01Header }}
+                                        trackColor = {{
+                                            true: ENABLED_TRACK_COLOR,
+                                            false: DISABLED_TRACK_COLOR
+                                        }}
                                         value = { disableCallIntegration } />
                                 </FormRow>
                                 <Divider style = { styles.fieldSeparator } />
@@ -303,7 +313,10 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             <Switch
                                 onValueChange = { this._onDisableP2P }
                                 thumbColor = { THUMB_COLOR }
-                                trackColor = {{ true: palette.screen01Header }}
+                                trackColor = {{
+                                    true: ENABLED_TRACK_COLOR,
+                                    false: DISABLED_TRACK_COLOR
+                                }}
                                 value = { disableP2P } />
                         </FormRow>
                         <Divider style = { styles.fieldSeparator } />
@@ -314,7 +327,10 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                                 <Switch
                                     onValueChange = { this._onDisableCrashReporting }
                                     thumbColor = { THUMB_COLOR }
-                                    trackColor = {{ true: palette.screen01Header }}
+                                    trackColor = {{
+                                        true: ENABLED_TRACK_COLOR,
+                                        false: DISABLED_TRACK_COLOR
+                                    }}
                                     value = { disableCrashReporting } />
                             </FormRow>
                         )}

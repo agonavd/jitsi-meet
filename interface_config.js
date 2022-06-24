@@ -91,7 +91,7 @@ var interfaceConfig = {
 
     LANG_DETECTION: true, // Allow i18n to detect the system language
     LIVE_STREAMING_HELP_LINK: 'https://jitsi.org/live', // Documentation reference for the live streaming feature.
-    LOCAL_THUMBNAIL_RATIO: 1, // 1:1
+    LOCAL_THUMBNAIL_RATIO: 16 / 9, // 16:9
 
     /**
      * Maximum coefficient of the ratio of the large video to the visible area
@@ -144,7 +144,7 @@ var interfaceConfig = {
     RECENT_LIST_ENABLED: true,
     REMOTE_THUMBNAIL_RATIO: 1, // 1:1
 
-    SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar', 'sounds' ],
+    SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar', 'sounds', 'more' ],
 
     /**
      * Specify which sharing features should be displayed. If the value is not set
