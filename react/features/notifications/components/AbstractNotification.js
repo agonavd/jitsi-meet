@@ -96,8 +96,15 @@ export type Props = {
     /**
      * The unique identifier for the notification.
      */
-    uid: string
+    uid: string,
+
+    /**
+     * The unique identifier for the message.
+     */
+    messageId: string,
 };
+
+const _MESSAGE_DISSMISED_COMMAND = 'messageDismissed';
 
 /**
  * Abstract class for {@code Notification} component.

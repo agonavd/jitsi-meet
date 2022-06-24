@@ -1,8 +1,10 @@
 // @flow
 
 import throttle from 'lodash/throttle';
+import { composeInitialProps } from 'react-i18next';
 import type { Dispatch } from 'redux';
 
+import { appNavigate } from '../app/actions';
 import { NOTIFICATIONS_ENABLED, getFeatureFlag } from '../base/flags';
 import { getParticipantCount } from '../base/participants/functions';
 
@@ -60,14 +62,33 @@ export function clearNotifications() {
  * removed.
  * @returns {{
  *     type: HIDE_NOTIFICATION,
- *     uid: string
+ *     uid: string,
+ *     conference: object 
  * }}
  */
-export function hideNotification(uid: string) {
-    return {
+
+export function hideNotification(uid: string, notification: Object = null) {
+return (dispatch: Dispatch<any>, getState: Function) => {
+    const state = getState();
+    const { conference } = state['features/base/conference'];
+
+    if (notification) {
+        if (notification.props.isEndStream) {
+            return Promise.resolve(dispatch({
+                type: HIDE_NOTIFICATION,
+                uid,
+                conference: conference
+            })).then( 
+                () => dispatch(appNavigate(undefined)));
+        }
+    }
+
+    return dispatch({
         type: HIDE_NOTIFICATION,
-        uid
-    };
+        uid,
+        conference: conference
+    });
+};
 }
 
 /**
@@ -108,22 +129,44 @@ export function showErrorNotification(props: Object, type: ?string) {
  * @returns {Function}
  */
 export function showNotification(props: Object = {}, type: ?string) {
+
+    const restructureProps = function(props: Object = {}) {
+        if (props.description) {
+            props.description = JSON.parse(props.description);
+            props.messageId = (props.description.id != null) ? props.description?.id : "raisAHand";
+            console.log("here restructure");
+            props.title = (typeof props.description.senderInfo !== 'undefined') ? props?.description?.senderInfo?.name : "ViCE";
+            props.isEndStream = (props.description?.deviceMessageType === "CONSULTATION_ENDED") ? true : false;
+        }
+        return props;
+     };    
+
     return function(dispatch: Function, getState: Function) {
         const { disabledNotifications = [], notifications, notificationTimeouts } = getState()['features/base/config'];
         const enabledFlag = getFeatureFlag(getState(), NOTIFICATIONS_ENABLED, true);
-
-        const shouldDisplay = enabledFlag
-            && !(disabledNotifications.includes(props.descriptionKey)
-                || disabledNotifications.includes(props.titleKey))
+        props = restructureProps(props);
+        if (!props) return;
+        const shouldDisplay = 
+            enabledFlag
+            && !props.description.handledAt || props.description?.deviceMessageType === "CONSULTATION_ENDED"
+            && props.description?.sendTo === "clinician" || props.description?.isRaisedHand === true || props.description?.deviceMessageType === "CONSULTATION_ENDED"
             && (!notifications
-                || notifications.includes(props.descriptionKey)
-                || notifications.includes(props.titleKey));
+            || notifications.includes(props.descriptionKey)
+            || notifications.includes(props.titleKey));
 
         if (shouldDisplay) {
+            if (props.description?.deviceMessageType === "MESSAGE") {
+                props.description = props.description.content
+            } else if (props.description?.deviceMessageType === "CONSULTATION_ENDED") {
+                props.description = "Consulation phase has ended"
+            } else {
+                props.description = "Raised a Hand"
+            }
+            
             return dispatch({
                 type: SHOW_NOTIFICATION,
                 props,
-                timeout: getNotificationTimeout(type, notificationTimeouts),
+                timeout: NOTIFICATION_TIMEOUT.LONG,
                 uid: props.uid || window.Date.now().toString()
             });
         }

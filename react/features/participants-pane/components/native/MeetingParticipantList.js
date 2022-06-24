@@ -200,45 +200,6 @@ class MeetingParticipantList extends PureComponent<Props> {
             lobbyParticipants,
             t
         } = this.props;
-<<<<<<< HEAD
-        const title = _currentRoom?.name
-
-            // $FlowExpectedError
-            ? `${_currentRoom.name} (${_participantsCount})`
-            : t('participantsPane.headings.participantsList',
-                { count: _participantsCount });
-
-        // Regarding the fact that we have 3 sections, we apply
-        // a certain height percentage for every section in order for all to fit
-        // inside the participants pane container
-        // If there are only meeting participants available,
-        // we take the full container height
-        const onlyMeetingParticipants
-            = breakoutRooms?.length === 0 && lobbyParticipants?.length === 0;
-        const containerStyleModerator
-            = onlyMeetingParticipants
-                ? styles.meetingListFullContainer : styles.meetingListContainer;
-        const containerStyle
-            = isLocalModerator
-                ? containerStyleModerator : styles.notLocalModeratorContainer;
-        const finalContainerStyle
-            = _participantsCount > 6 && containerStyle;
-
-        return (
-            <CollapsibleList
-                containerStyle = { finalContainerStyle }
-                title = { title } >
-                {
-                    _showInviteButton
-                    && <Button
-                        children = { t('participantsPane.actions.invite') }
-                        icon = { this._renderInviteMoreIcon }
-                        labelStyle = { styles.inviteLabel }
-                        mode = 'contained'
-                        onPress = { this._onInvite }
-                        style = { styles.inviteButton } />
-                }
-=======
 
         return (
             <View
@@ -250,7 +211,6 @@ class MeetingParticipantList extends PureComponent<Props> {
                         ? `${_currentRoom.name} (${_participantsCount})`
                         : t('participantsPane.headings.participantsList', { count: _participantsCount })}
                 </Text>
->>>>>>> b029c9d98 (See only the video from the vuzix device not other participants)
                 <ClearableInput
                     onChange = { this._onSearchStringChange }
                     placeholder = { t('participantsPane.search') }

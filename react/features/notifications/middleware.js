@@ -73,6 +73,11 @@ const getNotifications = state => {
     return _visible ? notifications : [];
 };
 
+import {
+    HIDE_NOTIFICATION
+} from './actionTypes';
+
+const _MESSAGE_DISSMISED_COMMAND = 'messageDismissed';
 /**
  * Middleware that captures actions to display notifications.
  *
@@ -122,44 +127,6 @@ MiddlewareRegistry.register(store => next => action => {
             timers.delete(action.uid);
         }
         break;
-    }
-    case PARTICIPANT_JOINED: {
-        const result = next(action);
-        const { participant: p } = action;
-        const { conference } = state['features/base/conference'];
-
-        // Do not display notifications for the virtual screenshare tiles.
-        if (conference
-            && !p.local
-            && !p.isVirtualScreenshareParticipant
-            && !joinLeaveNotificationsDisabled()
-            && !p.isReplacing) {
-            dispatch(showParticipantJoinedNotification(
-                getParticipantDisplayName(state, p.id)
-            ));
-        }
-
-        return result;
-    }
-    case PARTICIPANT_LEFT: {
-        if (!joinLeaveNotificationsDisabled()) {
-            const participant = getParticipantById(
-                store.getState(),
-                action.participant.id
-            );
-
-            // Do not display notifications for the virtual screenshare tiles.
-            if (participant
-                && !participant.local
-                && !participant.isVirtualScreenshareParticipant
-                && !action.participant.isReplaced) {
-                dispatch(showParticipantLeftNotification(
-                    getParticipantDisplayName(state, participant.id)
-                ));
-            }
-        }
-
-        return next(action);
     }
     case PARTICIPANT_UPDATED: {
         const { disableModeratorIndicator } = state['features/base/config'];

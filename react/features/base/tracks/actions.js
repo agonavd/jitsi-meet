@@ -734,7 +734,9 @@ function _shouldMirror(track) {
             // of the value on the right side of the equality check is defined
             // by jitsi-meet. The type definitions are surely compatible today
             // but that may not be the case tomorrow.
-            && track.getCameraFacingMode() === CAMERA_FACING_MODE.USER);
+
+            // Dont mirror the video on smart glasses.
+            && track.getCameraFacingMode() === CAMERA_FACING_MODE.ENVIRONMENT);
 }
 
 /**
