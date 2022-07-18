@@ -152,6 +152,7 @@ public class MainActivity extends JitsiMeetActivity {
             = new JitsiMeetConferenceOptions.Builder()
             .setServerURL(buildURL("https://meet.virtualcp.app"))
             .setFeatureFlag("welcomepage.enabled", true)
+            .setFeatureFlag("prejoinpage.enabled", false)
             .setFeatureFlag("call-integration.enabled", false)
             .setFeatureFlag("resolution", 1080)
             .setFeatureFlag("server-url-change.enabled", !configurationByRestrictions)

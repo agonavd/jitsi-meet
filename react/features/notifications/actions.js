@@ -147,10 +147,6 @@ export function showNotification(props: Object = {}, type: ?string) {
         props = restructureProps(props);
         if (!props) return;
         const shouldDisplay = 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             enabledFlag
             && !props.description.handledAt || props.description?.deviceMessageType === "CONSULTATION_ENDED"
             && props.description?.sendTo === "clinician" || props.description?.isRaisedHand === true || props.description?.deviceMessageType === "CONSULTATION_ENDED"

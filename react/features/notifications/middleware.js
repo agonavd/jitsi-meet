@@ -73,10 +73,6 @@ const getNotifications = state => {
     return _visible ? notifications : [];
 };
 
-import {
-    HIDE_NOTIFICATION
-} from './actionTypes';
-
 const _MESSAGE_DISSMISED_COMMAND = 'messageDismissed';
 /**
  * Middleware that captures actions to display notifications.
