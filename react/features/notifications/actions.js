@@ -3,7 +3,8 @@
 import throttle from 'lodash/throttle';
 import { composeInitialProps } from 'react-i18next';
 import type { Dispatch } from 'redux';
-
+import { muteLocal } from '../video-menu/actions';
+import { MEDIA_TYPE } from '../base/media';
 import { appNavigate } from '../app/actions';
 import { NOTIFICATIONS_ENABLED, getFeatureFlag } from '../base/flags';
 import { getParticipantCount } from '../base/participants/functions';
@@ -73,6 +74,10 @@ return (dispatch: Dispatch<any>, getState: Function) => {
     const { conference } = state['features/base/conference'];
 
     if (notification) {
+        if (notification.props.isMicMuted != null) {
+            dispatch(muteLocal(notification.props.isMicMuted, MEDIA_TYPE.AUDIO));
+        }
+
         if (notification.props.isEndStream) {
             return Promise.resolve(dispatch({
                 type: HIDE_NOTIFICATION,
@@ -134,17 +139,26 @@ export function showNotification(props: Object = {}, type: ?string) {
         if (props.description) {
             props.description = JSON.parse(props.description);
             props.messageId = (props.description.id != null) ? props.description?.id : "raisAHand";
-            console.log("here restructure");
             props.title = (typeof props.description.senderInfo !== 'undefined') ? props?.description?.senderInfo?.name : "ViCE";
             props.isEndStream = (props.description?.deviceMessageType === "CONSULTATION_ENDED") ? true : false;
+            props.isMicMuted = isAudioMuted(props);
         }
         return props;
+     };    
+    const isAudioMuted = function(props: Object = {}) {
+        if (props.description?.deviceMessageType === "PAUSE_SESSION") {
+            return true;
+        } else if (props.description?.deviceMessageType === "RESUME_SESSION") {
+            return false;
+        }
+        return null;
      };    
 
     return function(dispatch: Function, getState: Function) {
         const { disabledNotifications = [], notifications, notificationTimeouts } = getState()['features/base/config'];
         const enabledFlag = getFeatureFlag(getState(), NOTIFICATIONS_ENABLED, true);
         props = restructureProps(props);
+        let isMicMuted = isAudioMuted(props);
         if (!props) return;
         const shouldDisplay = 
             enabledFlag
@@ -159,6 +173,10 @@ export function showNotification(props: Object = {}, type: ?string) {
                 props.description = props.description.content
             } else if (props.description?.deviceMessageType === "CONSULTATION_ENDED") {
                 props.description = "Consulation phase has ended"
+            } else if (props.description?.deviceMessageType === "PAUSE_SESSION") {
+                props.description = "Session is paused"
+            } else if (props.description?.deviceMessageType === "RESUME_SESSION") {
+                props.description = "Session is resumed"
             } else {
                 props.description = "Raised a Hand"
             }
@@ -166,7 +184,7 @@ export function showNotification(props: Object = {}, type: ?string) {
             return dispatch({
                 type: SHOW_NOTIFICATION,
                 props,
-                timeout: NOTIFICATION_TIMEOUT.LONG,
+                timeout: (isMicMuted !== null) ? NOTIFICATION_TIMEOUT.INSTANT : NOTIFICATION_TIMEOUT.LONG,
                 uid: props.uid || window.Date.now().toString()
             });
         }

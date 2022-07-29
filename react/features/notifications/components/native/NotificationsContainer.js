@@ -163,7 +163,7 @@ class NotificationsContainer extends Component<Props> {
         }
 
         var endNotification = _notifications.filter(obj => {
-            return obj.props.isEndStream == true
+            return obj.props.isEndStream == true || (obj.props.isMicMuted !== null)
         })
         this.props.dispatch(hideNotification(uid, endNotification[0]));
     }
