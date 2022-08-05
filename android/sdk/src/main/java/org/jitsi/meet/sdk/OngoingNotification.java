@@ -101,7 +101,7 @@ class OngoingNotification {
             .setAutoCancel(false)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
-            .setSmallIcon(context.getResources().getIdentifier("ic_notification", "drawable", context.getPackageName()));
+            .setSmallIcon(R.drawable.ic_launcher_foreground);
 
         NotificationCompat.Action hangupAction = createAction(context, JitsiMeetOngoingConferenceService.Action.HANGUP, R.string.ongoing_notification_action_hang_up);
 
